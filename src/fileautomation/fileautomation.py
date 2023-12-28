@@ -38,33 +38,33 @@ all_terminations = (
 )
 
 
-def move(file: str, term: str) -> None:
-    if handle_fonts(file):
-        return 
-    
-    dir = f'{downloads_path}/{term}'
+def move(file: str, dir: str) -> None:
     if not os.path.exists(dir):
         os.makedirs(dir)
     os.rename(f'{downloads_path}/{file}', f'{dir}/{file}')
 
-def handle_fonts(file: str) -> bool:
-    for term in font_terminations:
-        if file.endswith(term):
-            dir = f'{downloads_path}/fonts'
-            if not os.path.exists(dir):
-                os.makedirs(dir)
-            os.rename(f'{downloads_path}/{file}', f'{dir}/{file}')
-            return True
-        
-    return False
+def handle_move(file: str, termination: str) -> None:
+    if handle_fonts(file):
+        return 
+    
+    dir = f'{downloads_path}/{termination}'
+    move(file, dir)
+    
+
+# def move(file: str, term: str) -> None:
+#     if handle_fonts(file):
+#         return 
+    
+#     dir = f'{downloads_path}/{term}'
+#     if not os.path.exists(dir):
+#         os.makedirs(dir)
+#     os.rename(f'{downloads_path}/{file}', f'{dir}/{file}')
 
 def handle_fonts(file: str) -> bool:
     for term in font_terminations:
         if file.endswith(term):
             dir = f'{downloads_path}/fonts'
-            if not os.path.exists(dir):
-                os.makedirs(dir)
-            os.rename(f'{downloads_path}/{file}', f'{dir}/{file}')
+            move(file, dir)
             return True
         
     return False
@@ -74,5 +74,5 @@ def main():
     download_files = os.listdir(downloads_path)
     for file in download_files:
         for term in all_terminations:
-            if file.endswith(term) and os.path.isfile(f'{downloads_path}/{file}'):
-                move(file, term)
+            if file.lower().endswith(term) and os.path.isfile(f'{downloads_path}/{file}'):
+                handle_move(file.lower(), term.lower())
