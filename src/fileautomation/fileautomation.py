@@ -38,101 +38,42 @@ all_terminations = (
 )
 all_terminations_set = set(all_terminations)
 
+def get_file_termination(file: str) -> str:
+    file_lower = file.lower()
+    for term in all_terminations_set:
+        if file_lower.endswith(term) and os.path.isfile(f'{downloads_path}/{file}'):
+            return term
+    return ""
 
-def move(file: str, dir: str) -> None:
+def handle_move(file: str, termination: str) -> None:
+    handlers = {
+        "img": img_terminations,
+        "videos": video_terminations,
+        "audio": audio_terminations,
+        "documents": document_terminations,
+        "archives": archive_terminations,
+        "executables": executable_terminations,
+        "fonts": font_terminations,
+        "web_files": web_terminations,
+        "database": database_terminations,
+        "programming": programming_terminations,
+    }
+
+    for key, value in handlers.items():
+        if termination in value:
+            move(file, key)
+            break
+
+def move(file: str, dir_name: str) -> None:
+    dir = f'{downloads_path}/{dir_name}'
     if not os.path.exists(dir):
         os.makedirs(dir)
     os.rename(f'{downloads_path}/{file}', f'{dir}/{file}')
-
-def handle_move(file: str, termination: str) -> None:
-    if move_img(file):
-        return
-    
-    if move_video(file):
-        return
-    
-    if move_audio(file):
-        return
-    
-    if move_documents(file):
-        return
-    
-    if move_archives(file):
-        return
-    
-    if move_executables(file):
-        return
-    
-    if move_fonts(file):
-        return
-    
-    if move_web_files(file):
-        return
-    
-    if move_database(file):
-        return
-    
-    if move_programming(file):
-        return
-    
-    dir = f'{downloads_path}/{termination}'
-    move(file, dir)
-    
-
-def handle_group_terminations(file: str, terminations: list, dir_name: str) -> bool:
-    for term in terminations:
-        if file.lower().endswith(term):
-            dir = f'{downloads_path}/{dir_name}'
-            move(file, dir)
-            return True
-    return False
-
-def move_img(file: str) -> bool:
-    dir_name = "img"
-    return handle_group_terminations(file, img_terminations, dir_name)
-
-def move_video(file: str) -> bool:
-    dir_name = "videos"
-    return handle_group_terminations(file, video_terminations, dir_name)
-
-def move_audio(file: str) -> bool:
-    dir_name = "audio"
-    return handle_group_terminations(file, audio_terminations, dir_name)
-
-def move_fonts(file: str) -> bool:
-    dir_name = "fonts"
-    return handle_group_terminations(file, font_terminations, dir_name)
-
-def move_documents(file: str) -> bool:
-    dir_name = "documents"
-    return handle_group_terminations(file, document_terminations, dir_name)
-
-def move_archives(file: str) -> bool:
-    dir_name = "archives"
-    return handle_group_terminations(file, archive_terminations, dir_name)
-
-def move_executables(file: str) -> bool:
-    dir_name = "executables"
-    return handle_group_terminations(file, executable_terminations, dir_name)
-
-def move_web_files(file: str) -> bool:
-    dir_name = "web_files"
-    return handle_group_terminations(file, web_terminations, dir_name)
-
-def move_database(file: str) -> bool:
-    dir_name = "database"
-    return handle_group_terminations(file, database_terminations, dir_name)
-
-def move_programming(file: str) -> bool:
-    dir_name = "programming"
-    return handle_group_terminations(file, programming_terminations, dir_name)
 
 
 def main():
     download_files = os.listdir(downloads_path)
     for file in download_files:
-        for term in all_terminations_set:
-            file_lower = file.lower()   
-            dir = f'{downloads_path}/{file}'
-            if file_lower.endswith(term) and os.path.isfile(dir):
-                handle_move(file, term)
+        termination = get_file_termination(file)
+        if termination:
+            handle_move(file, termination)
