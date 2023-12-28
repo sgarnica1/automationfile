@@ -17,3 +17,9 @@ fileautomation = "fileautomation.fileautomation:main"
 
 # [project.gui-scripts]
 # fileautomation = "fileautmation.fileautomation:main"
+
+# Commands
+# pip install -e .
+# pip install -e .[dev]
+# app.exe
+# py -m fileautomation
