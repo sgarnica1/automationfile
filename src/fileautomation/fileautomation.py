@@ -2,28 +2,23 @@
 
 import os
 
+# Define the path to the downloads folder
 downloads_path = "C:/Users/sgarn/Downloads"
-# Images
+
+# Define lists of file terminations for different file types
 img_terminations = ["jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp"]
-# Audio
 audio_terminations = ["mp3", "wav", "ogg", "flac", "aac"]
-# Video
 video_terminations = ["mp4", "avi", "mkv", "mov", "flv", "wmv"]
-# Documents
 document_terminations = ["pdf", "doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "odp"]
-# Archives
 archive_terminations = ["zip", "rar", "7z", "tar", "gz"]
-# Executable Files
 executable_terminations = ["exe", "app", "sh"]
-# Fonts
 font_terminations = ["ttf", "otf"]
-# Web Files
 web_terminations = ["html", "css", "js", "json"]
-# Database
 database_terminations = ["sqlite", "db", "mdb"]
-# Programming/Scripting
 programming_terminations = ["py", "java", "cpp", "js", "php"]
 
+
+# Combine all terminations into a set for efficient lookup
 all_terminations = (
     img_terminations +
     audio_terminations +
@@ -39,6 +34,15 @@ all_terminations = (
 all_terminations_set = set(all_terminations)
 
 def get_file_termination(file: str) -> str:
+    """
+    Determine the termination of a file based on its name and file existence.
+
+    Args:
+        file (str): The name of the file.
+
+    Returns:
+        str: The termination of the file.
+    """
     file_lower = file.lower()
     for term in all_terminations_set:
         if file_lower.endswith(term) and os.path.isfile(f'{downloads_path}/{file}'):
@@ -46,6 +50,13 @@ def get_file_termination(file: str) -> str:
     return ""
 
 def handle_move(file: str, termination: str) -> None:
+    """
+    Move a file to its corresponding directory based on its termination.
+
+    Args:
+        file (str): The name of the file.
+        termination (str): The termination of the file.
+    """
     handlers = {
         "img": img_terminations,
         "videos": video_terminations,
@@ -65,6 +76,13 @@ def handle_move(file: str, termination: str) -> None:
             break
 
 def move(file: str, dir_name: str) -> None:
+    """
+    Move a file to a specified directory.
+
+    Args:
+        file (str): The name of the file.
+        dir_name (str): The name of the target directory.
+    """
     dir = f'{downloads_path}/{dir_name}'
     if not os.path.exists(dir):
         os.makedirs(dir)
@@ -72,6 +90,9 @@ def move(file: str, dir_name: str) -> None:
 
 
 def main():
+    """
+    Main function to organize files in the downloads folder based on their terminations.
+    """
     download_files = os.listdir(downloads_path)
     for file in download_files:
         termination = get_file_termination(file)
