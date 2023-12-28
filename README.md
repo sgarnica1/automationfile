@@ -19,7 +19,7 @@ This script organizes files in the downloads folder by moving them to specific d
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/sgarnica1/automationfile
+   git clone https://github.com/sgarnica1/automationfile.git
    ```
 
 2. Navigate to project directory
