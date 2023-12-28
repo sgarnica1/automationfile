@@ -51,15 +51,6 @@ def handle_move(file: str, termination: str) -> None:
     move(file, dir)
     
 
-# def move(file: str, term: str) -> None:
-#     if handle_fonts(file):
-#         return 
-    
-#     dir = f'{downloads_path}/{term}'
-#     if not os.path.exists(dir):
-#         os.makedirs(dir)
-#     os.rename(f'{downloads_path}/{file}', f'{dir}/{file}')
-
 def handle_fonts(file: str) -> bool:
     for term in font_terminations:
         if file.endswith(term):
