@@ -1,7 +1,11 @@
 [project]
 name = "FileAutomation"
-version = "0.1"
-# dependencies = []
+description = "python project for organizing a files directory in Windows"
+version = "0.1.0"
+authors = [
+    { name = "Sergio Garnica", email = "sgarnica1902@gmail.com" }
+]
+dependencies = []
 
 # [project.optional-dependencies]
 # dev = [
@@ -15,11 +19,5 @@ build-backend = "setuptools.build_meta"
 [project.scripts]
 fileautomation = "fileautomation.fileautomation:main"
 
-# [project.gui-scripts]
-# fileautomation = "fileautmation.fileautomation:main"
-
-# Commands
-# pip install -e .
-# pip install -e .[dev]
-# app.exe
-# py -m fileautomation
+[project.gui-scripts]
+fileautomation = "fileautomation.fileautomation:main"
